@@ -19,8 +19,8 @@ class UIManager {
     this.ttsButton.textContent = "Disable TTS";
     this.ttsButton.style.cssText = `
       position: fixed;
-      top: 10px;
-      right: 140px;
+      top: 90px;
+      left: 20px;
       z-index: 10000;
       padding: 8px 12px;
       background-color: #4CAF50;
@@ -47,8 +47,8 @@ class UIManager {
     this.coverButton.textContent = "Show Equation";
     this.coverButton.style.cssText = `
       position: fixed;
-      top: 10px;
-      right: 10px;
+      top: 50px;
+      left: 20px;
       z-index: 10000;
       padding: 8px 12px;
       background-color: #4CAF50;
