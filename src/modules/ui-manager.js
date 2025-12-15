@@ -4,13 +4,34 @@ class UIManager {
     this.coverOverlay = null;
     this.ttsButton = null;
     this.coverButton = null;
+    this.replayButton = null;
     this.onTTSToggleCallback = null;
     this.onCoverToggleCallback = null;
+    this.onReplayCallback = null;
+    this.problemObserver = null;
   }
 
   createButtons() {
     this.createTTSButton();
     this.createCoverButton();
+    this.createReplayButton();
+    this.setupProblemObserver();
+  }
+
+  setupProblemObserver() {
+    this.problemObserver = new MutationObserver(() => {
+      const equationElement = document.querySelector(".problem");
+      if (!equationElement && this.coverOverlay && this.coverOverlay.style.display !== "none") {
+        this.coverOverlay.style.display = "none";
+      } else if (equationElement && this.equationCovered && this.coverOverlay) {
+        this.positionOverlay();
+        this.coverOverlay.style.display = "flex";
+      }
+    });
+
+    this.problemObserver.observe(document.body, {
+      childList: true,
+    });
   }
 
   createTTSButton() {
@@ -69,17 +90,55 @@ class UIManager {
     document.body.appendChild(this.coverButton);
   }
 
+  createReplayButton() {
+    this.replayButton = document.createElement("button");
+    this.replayButton.id = "replay-equation-btn";
+    this.replayButton.textContent = "Replay Equation";
+    this.replayButton.style.cssText = `
+      position: fixed;
+      top: 130px;
+      left: 20px;
+      z-index: 10000;
+      padding: 8px 12px;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+    `;
+
+    this.replayButton.addEventListener("click", () => {
+      if (this.onReplayCallback) {
+        this.onReplayCallback();
+      }
+    });
+
+    document.body.appendChild(this.replayButton);
+  }
+
   updateTTSButton(isEnabled) {
     if (this.ttsButton) {
       this.ttsButton.textContent = isEnabled ? "Disable TTS" : "Enable TTS";
       this.ttsButton.style.backgroundColor = isEnabled ? "#4CAF50" : "#f44336";
     }
+
+    this.updateReplayButton(isEnabled);
   }
 
   updateCoverButton() {
     if (this.coverButton) {
       this.coverButton.textContent = this.equationCovered ? "Show Equation" : "Hide Equation";
       this.coverButton.style.backgroundColor = this.equationCovered ? "#4CAF50" : "#f44336";
+    }
+  }
+
+  updateReplayButton(isEnabled) {
+    if (this.replayButton) {
+      this.replayButton.disabled = !isEnabled;
+      this.replayButton.style.opacity = isEnabled ? "1" : "0.5";
+      this.replayButton.style.cursor = isEnabled ? "pointer" : "not-allowed";
     }
   }
 
@@ -98,6 +157,7 @@ class UIManager {
     if (this.coverOverlay) {
       this.coverOverlay.style.display = "none";
     }
+
     this.equationCovered = false;
     this.updateCoverButton();
   }
@@ -126,8 +186,12 @@ class UIManager {
 
   positionOverlay() {
     const equationElement = document.querySelector(".problem");
-    if (!equationElement || !this.coverOverlay) return;
-
+    if (!equationElement || !this.coverOverlay) {
+      if (this.coverOverlay) {
+        this.coverOverlay.style.display = "none";
+      }
+      return;
+    }
     const rect = equationElement.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
@@ -144,5 +208,9 @@ class UIManager {
 
   onCoverToggle(callback) {
     this.onCoverToggleCallback = callback;
+  }
+
+  onReplay(callback) {
+    this.onReplayCallback = callback;
   }
 }

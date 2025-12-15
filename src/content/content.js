@@ -14,6 +14,7 @@ class ZetamacTTS {
     this.setupEventListeners();
     this.uiManager.createButtons();
     this.uiManager.updateTTSButton(this.storageManager.getTTSEnabled());
+    this.uiManager.updateReplayButton(this.storageManager.getTTSEnabled());
 
     if (this.storageManager.getCoverEnabled()) {
       this.uiManager.showEquationCover();
@@ -28,6 +29,7 @@ class ZetamacTTS {
     this.storageManager.onSettingsChange((settings) => {
       if (settings.ttsEnabled !== undefined) {
         this.uiManager.updateTTSButton(settings.ttsEnabled);
+        this.uiManager.updateReplayButton(settings.ttsEnabled);
         if (!settings.ttsEnabled) {
           this.ttsManager.stop();
         }
@@ -50,6 +52,16 @@ class ZetamacTTS {
     this.uiManager.onCoverToggle(() => {
       const newState = !this.storageManager.getCoverEnabled();
       this.storageManager.setCoverEnabled(newState);
+    });
+
+    this.uiManager.onReplay(() => {
+      if (!this.storageManager.getTTSEnabled()) return;
+
+      const currentEquation = this.equationReader.lastEquation || document.querySelector(".problem")?.textContent;
+      if (!currentEquation) return;
+
+      const formattedEquation = this.equationReader.formatEquation(currentEquation);
+      this.ttsManager.speak(formattedEquation);
     });
   }
 
