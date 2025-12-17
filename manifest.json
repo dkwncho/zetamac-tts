@@ -3,7 +3,7 @@
   "name": "Zetamac TTS",
   "version": "1.0",
   "description": "Reads math problems on Zetamac aloud using text-to-speech.",
-  "permissions": ["scripting", "storage", "activeTab"],
+  "permissions": ["storage"],
   "host_permissions": ["https://arithmetic.zetamac.com/*"],
   "background": {
     "service_worker": "src/background/background.js"
