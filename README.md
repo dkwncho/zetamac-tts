@@ -6,4 +6,4 @@ A Chrome extension that adds automated text-to-speech and equation cover to [Zet
 
 ## Installation
 
-Find this extension on the [Chrome Web Store](https://chromewebstore.google.com/detail/ejmdiejggeipdbipdkbeofjjeofdipob?utm_source=item-share-cb)!
+Find this extension on the [Chrome Web Store](https://chromewebstore.google.com/detail/ejmdiejggeipdbipdkbeofjjeofdipob)!
