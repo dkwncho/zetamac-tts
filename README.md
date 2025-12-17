@@ -6,13 +6,4 @@ A Chrome extension that adds automated text-to-speech and equation cover to [Zet
 
 ## Installation
 
-### From CRX File
-1. Download the `zetamac-tts.crx` file
-2. Open Chrome and navigate to `chrome://extensions/`
-3. Drag and drop the `.crx` file onto the extensions page
-
-### From Source
-1. Clone or download this repository
-2. Open Chrome and navigate to `chrome://extensions/`
-3. Enable "Developer mode" in the top right corner
-4. Click "Load unpacked" and select the project directory
+Find this extension on the [Chrome Web Store](https://chromewebstore.google.com/detail/ejmdiejggeipdbipdkbeofjjeofdipob?utm_source=item-share-cb)!
